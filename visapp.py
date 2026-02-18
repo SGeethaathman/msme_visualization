@@ -198,7 +198,7 @@ app = Dash(__name__)
 
 app.layout = html.Div([
 
-    html.Div("SALES FORECAST ANALYSIS DASHBOARD (2026)", style={
+    html.Div("SALES FORECAST ANALYSIS DASHBOARD ", style={
         "background": HEADER_BG,
         "color": "white",
         "padding": "18px",
@@ -227,5 +227,7 @@ app.layout = html.Div([
     "padding": "20px"
 })
 
-if __name__ == "__main__":
-    app.run(debug=False)
+def run_dash():
+    app.run(host="127.0.0.1", port=8050, debug=False)
+
+

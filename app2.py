@@ -1,4 +1,3 @@
-
 import gradio as gr
 import pandas as pd
 import numpy as np
@@ -8,6 +7,9 @@ import matplotlib.pyplot as plt
 import datetime
 import os
 import warnings
+import threading
+import webbrowser
+from visapp import run_dash
 import time # Import the time module
 warnings.filterwarnings('ignore')
 from sqlalchemy import create_engine
@@ -1836,6 +1838,14 @@ with gr.Blocks(
                 gr.update(visible=False)
             )
 
+    def open_dashboard():
+        def run():
+          run_dash()
+
+        threading.Thread(target=run, daemon=True).start()
+        webbrowser.open("http://127.0.0.1:8050")
+        return 6, *update_visibility(6)
+    
 
     def analyze_data(user_data, consent, file):
             # Clear previous messages/outputs before analysis
@@ -2022,8 +2032,21 @@ with gr.Blocks(
     cancel5_btn.click(lambda: (-1, *update_visibility(-1)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col]) # Cancel button for Step 5
     analyze_btn.click(analyze_data, [user_data_state, consent_check, file_upload], [insights_output, pdf_output, view_dashboard_btn, kpi1, kpi2, kpi3, kpi4, chart1, chart2, chart3, chart4, upload_message])
     file_upload.change(handle_file_upload_change, inputs=[user_data_state, file_upload], outputs=[upload_message, error5])
+    view_dashboard_btn.click(
+    open_dashboard,
+    [],
+    [
+        step_state,
+        landing_col,
+        step0_col,
+        step1_col,
+        step2_col,
+        step3_col,
+        step4_col,
+        step5_col,
+        step6_col
+    ])
 
-    view_dashboard_btn.click(lambda: (6, *update_visibility(6)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col])
     back6_btn.click(lambda: (5, *update_visibility(5)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col])
 
 
@@ -2062,6 +2085,7 @@ with gr.Blocks(
             step6_col
         ]
     )
+
 
     if __name__ == "__main__":
         print("=" * 60)
