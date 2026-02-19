@@ -1530,46 +1530,6 @@ with gr.Blocks(
 
     # Step 6: Dashboard
     
-    with gr.Column(visible=False, elem_classes="step-slide") as step6_col:
-
-        gr.Markdown("## 📊 Business Performance Dashboard")
-
-        # ===== KPI CARDS =====
-        with gr.Row(elem_classes="center-wrapper"):
-
-            with gr.Column(elem_classes="dashboard-card"):
-                kpi1 = gr.Markdown("### 💰 Total Sales\n## —")
-
-            with gr.Column(elem_classes="dashboard-card"):
-                kpi2 = gr.Markdown("### 📈 Total Profit\n## —")
-
-            with gr.Column(elem_classes="dashboard-card"):
-                kpi3 = gr.Markdown("### 🧠 Health Score\n## —")
-
-            with gr.Column(elem_classes="dashboard-card"):
-                kpi4 = gr.Markdown("### 🚀 Growth Score\n## —")
-
-        gr.Markdown("---")
-
-        # ===== CHARTS ROW 1 =====
-        with gr.Row():
-            with gr.Column(elem_classes="chart-card"):
-                chart1 = gr.Plot()
-
-            with gr.Column(elem_classes="chart-card"):
-                chart2 = gr.Plot()
-
-        # ===== CHARTS ROW 2 =====
-        with gr.Row():
-            with gr.Column(elem_classes="chart-card"):
-                chart3 = gr.Plot()
-
-            with gr.Column(elem_classes="chart-card"):
-                chart4 = gr.Plot()
-
-        gr.Markdown("---")
-
-        back6_btn = gr.Button("⬅ Back to Data Upload", variant="secondary")
 
     # ==================== EVENT HANDLERS ====================
 
@@ -1584,7 +1544,6 @@ with gr.Blocks(
             gr.update(visible=(step == 3)),   # step3_col
             gr.update(visible=(step == 4)),   # step4_col
             gr.update(visible=(step == 5)),   # step5_col
-            gr.update(visible=(step == 6)),   # step6_col
         ]
 
    
@@ -1844,7 +1803,7 @@ with gr.Blocks(
 
         threading.Thread(target=run, daemon=True).start()
         webbrowser.open("http://127.0.0.1:8050")
-        return 6, *update_visibility(6)
+        return 5, *update_visibility(5)
     
 
     def analyze_data(user_data, consent, file):
@@ -1958,8 +1917,6 @@ with gr.Blocks(
                     insights if insights else "✅ Analysis completed successfully",
                     pdf_path,
                     gr.update(visible=True),
-                    kpi1, kpi2, kpi3, kpi4,
-                    fig1, fig2, fig3, fig4,
                     gr.update(value="", visible=False) # Clear upload_message
                 )
 
@@ -1984,30 +1941,30 @@ with gr.Blocks(
 
         # Wire up events
         
-    login_btn.click(handle_login, [login_mobile], [login_status, user_data_state, step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col])
-    register_btn.click(handle_register, [], [login_status, step_state, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, proceed_to_step5_btn]) # Added proceed_to_step5_btn here
+    login_btn.click(handle_login, [login_mobile], [login_status, user_data_state, step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col])
+    register_btn.click(handle_register, [], [login_status, step_state, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, proceed_to_step5_btn]) # Added proceed_to_step5_btn here
 
-    cancel1_btn.click(lambda: (-1, *update_visibility(-1), gr.update(visible=False)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, proceed_to_step5_btn])
-    next1_btn.click(validate_step1, [name_input, mobile_input, email_input, role_input, user_data_state], [error1, user_data_state, step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, proceed_to_step5_btn])
+    cancel1_btn.click(lambda: (-1, *update_visibility(-1), gr.update(visible=False)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, proceed_to_step5_btn])
+    next1_btn.click(validate_step1, [name_input, mobile_input, email_input, role_input, user_data_state], [error1, user_data_state, step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, proceed_to_step5_btn])
 
     fetch_btn.click(_fetch_msme_data, [msme_number_input], [fetched_name, fetched_org, fetched_activity, fetched_type, fetched_state, fetched_city, fetch_status])
-    back2_btn.click(lambda: (1, *update_visibility(1), gr.update(visible=False)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, proceed_to_step5_btn])
+    back2_btn.click(lambda: (1, *update_visibility(1), gr.update(visible=False)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, proceed_to_step5_btn])
     next2_btn.click(verify_step2, [msme_number_input, otp_input, user_data_state, fetched_name, fetched_org, fetched_activity, fetched_type, fetched_state, fetched_city, fetch_status],
-                [error2, user_data_state, step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, confirm_name, confirm_org, confirm_activity, confirm_type, confirm_state, confirm_city, proceed_to_step5_btn])
+                [error2, user_data_state, step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, confirm_name, confirm_org, confirm_activity, confirm_type, confirm_state, confirm_city, proceed_to_step5_btn])
 
-    back3_btn.click(lambda: (2, *update_visibility(2), gr.update(visible=False)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, proceed_to_step5_btn])
+    back3_btn.click(lambda: (2, *update_visibility(2), gr.update(visible=False)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, proceed_to_step5_btn])
     next3_btn.click(
     confirm_step3,
     [user_data_state, consent1, consent2, certificate_upload],
     [error3, user_data_state, step_state,
      landing_col, step0_col, step1_col, step2_col,
-     step3_col, step4_col, step5_col, step6_col,
+     step3_col, step4_col, step5_col,
      verification_status_display,
      proceed_to_step5_btn,
      business_type_input])
 
 
-    back4_btn.click(lambda: (3, *update_visibility(3), gr.update(visible=False), gr.update(value="", visible=False), gr.update(visible=True)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, proceed_to_step5_btn, error4, next4_btn])
+    back4_btn.click(lambda: (3, *update_visibility(3), gr.update(visible=False), gr.update(value="", visible=False), gr.update(visible=True)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, proceed_to_step5_btn, error4, next4_btn])
 
     next4_btn.click(
     submit_profile,
@@ -2025,12 +1982,15 @@ with gr.Blocks(
     proceed_to_step5_btn.click(
             lambda: (5, *update_visibility(5), gr.update(value="", visible=False), gr.update(visible=False)), # Clear error4 message and hide itself
             [],
-            [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col, error4, proceed_to_step5_btn]
+            [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, error4, proceed_to_step5_btn]
         )
 
-    back5_btn.click(lambda: (4, *update_visibility(4)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col])
-    cancel5_btn.click(lambda: (-1, *update_visibility(-1)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col]) # Cancel button for Step 5
-    analyze_btn.click(analyze_data, [user_data_state, consent_check, file_upload], [insights_output, pdf_output, view_dashboard_btn, kpi1, kpi2, kpi3, kpi4, chart1, chart2, chart3, chart4, upload_message])
+    back5_btn.click(lambda: (4, *update_visibility(4)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col])
+    cancel5_btn.click(lambda: (-1, *update_visibility(-1)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col]) # Cancel button for Step 5
+    analyze_btn.click(
+    analyze_data,
+    [user_data_state, consent_check, file_upload],
+    [insights_output, pdf_output, view_dashboard_btn, upload_message])
     file_upload.change(handle_file_upload_change, inputs=[user_data_state, file_upload], outputs=[upload_message, error5])
     view_dashboard_btn.click(
     open_dashboard,
@@ -2043,14 +2003,10 @@ with gr.Blocks(
         step2_col,
         step3_col,
         step4_col,
-        step5_col,
-        step6_col
+        step5_col
     ])
 
-    back6_btn.click(lambda: (5, *update_visibility(5)), [], [step_state,landing_col, step0_col, step1_col, step2_col, step3_col, step4_col, step5_col, step6_col])
 
-
-   
     quick_login_btn.click(
         handle_login,                      
         [quick_login_mobile],           
@@ -2064,8 +2020,7 @@ with gr.Blocks(
             step2_col,
             step3_col,
             step4_col,
-            step5_col,
-            step6_col
+            step5_col
         ]
     )
 
@@ -2081,8 +2036,7 @@ with gr.Blocks(
             step2_col,
             step3_col,
             step4_col,
-            step5_col,
-            step6_col
+            step5_col
         ]
     )
 
@@ -2099,4 +2053,6 @@ with gr.Blocks(
         demo.launch()
 
 
-
+# python -m venv venv
+# venv\Scripts\activate
+# pip install gradio pandas numpy matplotlib sqlalchemy psycopg2-binary scikit-learn prophet openpyxl
